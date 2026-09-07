@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>YCKXL💤 Precision</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.names {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.name {
+    position: absolute;
+    color: #fff;
+    opacity: .16;
+    font-weight: bold;
+    animation: move 4s ease-in-out infinite alternate;
+}
+
+@keyframes move {
+    from {
+        transform: translateY(-45px);
+    }
+    to {
+        transform: translateY(45px);
+    }
+}
+
+.panel {
+    position: relative;
+    width: min(430px, 92%);
+    max-height: 94vh;
+    overflow-y: auto;
+    margin: 3vh auto;
+    padding: 22px;
+    background: rgba(10,10,10,.96);
+    border: 1px solid #333;
+    border-radius: 20px;
+    box-shadow: 0 0 35px #000;
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+}
+
+.subtitle {
+    text-align: center;
+    color: #888;
+    margin: 5px 0 22px;
+}
+
+.function {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px;
+    margin: 8px 0;
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 12px;
+}
+
+.function span {
+    font-weight: bold;
+}
+
+.switch {
+    position: relative;
+    width: 46px;
+    height: 25px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+    background: #333;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.slider:before {
+    content: "";
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    left: 3px;
+    top: 3px;
+    background: #aaa;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+input:checked + .slider {
+    background: #666;
+}
+
+input:checked + .slider:before {
+    transform: translateX(21px);
+    background: #fff;
+}
+
+.sensitivity {
+    margin-top: 18px;
+    padding: 15px;
+    background: #0d0d0d;
+    border-radius: 14px;
+    border: 1px solid #292929;
+}
+
+.axis {
+    margin: 15px 0;
+}
+
+.axis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: white;
+}
+
+.number {
+    width: 70px;
+    padding: 8px;
+    background: #111;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.percent {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 18px;
+}
+
+button {
+    padding: 13px 8px;
+    background: #151515;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:active {
+    transform: scale(.98);
+}
+
+.status {
+    margin-top: 15px;
+    padding: 12px;
+    text-align: center;
+    background: #111;
+    border-radius: 10px;
+    color: #aaa;
+    font-size: 13px;
+}
+
+pre {
+    white-space: pre-wrap;
+    font-size: 11px;
+    color: #aaa;
+}
+</style>
+</head>
+
+<body>
+
+<div class="names" id="names"></div>
+
+<div class="panel">
+
+<h1>YCKXL💤</h1>
+<div class="subtitle">PRECISION PANEL</div>
+
+
+<!-- PRECISION LEGIT -->
+
+<div class="function">
+    <span>Precision Legit</span>
+
+    <label class="switch">
+        <input type="checkbox" id="legit">
+        <span class="slider"></span>
+    </label>
+</div>
+
+
+<!-- PRECISION RAGE -->
+
+<div class="function">
+    <span>Precision Rage</span>
+
+    <label class="switch">
+        <input type="checkbox" id="rage">
+        <span class="slider"></span>
+    </label>
+</div>
+
+
+<!-- LIMPAR MEMÓRIA -->
+
+<div class="function">
+    <span>Limpar memória</span>
+
+    <label class="switch">
+        <input type="checkbox" id="clearMemory">
+        <span class="slider"></span>
+    </label>
+</div>
+
+
+<!-- INJETAR -->
+
+<div class="function">
+    <span>Injetar</span>
+
+    <label class="switch">
+        <input type="checkbox" id="inject">
+        <span class="slider"></span>
+    </label>
+</div>
+
+
+<!-- PRECISION -->
+
+<div class="sensitivity">
+
+    <div class="axis-header">
+        <strong>PRECISION</strong>
+
+        <strong
+            class="percent"
+            id="precisionValue">
+            50%
+        </strong>
+    </div>
+
+    <input
+        id="precisionSlider"
+        type="range"
+        min="0"
+        max="100"
+        value="50"
+    >
+
+</div>
+
+
+<!-- SENSIBILIDADE X / Y -->
+
+<div class="sensitivity">
+
+    <strong>SENSIBILIDADE X / Y</strong>
+
+
+    <div class="axis">
+
+        <div class="axis-header">
+
+            <span>Eixo X</span>
+
+            <input
+                class="number"
+                id="xNumber"
+                type="number"
+                min="0"
+                max="100"
+                value="75"
+            >
+
+        </div>
+
+        <input
+            id="x"
+            type="range"
+            min="0"
+            max="100"
+            value="75"
+        >
+
+    </div>
+
+
+    <div class="axis">
+
+        <div class="axis-header">
+
+            <span>Eixo Y</span>
+
+            <input
+                class="number"
+                id="yNumber"
+                type="number"
+                min="0"
+                max="100"
+                value="55"
+            >
+
+        </div>
+
+        <input
+            id="y"
+            type="range"
+            min="0"
+            max="100"
+            value="55"
+        >
+
+    </div>
+
+</div>
+
+
+<!-- BOTÕES -->
+
+<div class="buttons">
+
+    <button id="apply">
+        APLICAR
+    </button>
+
+    <button id="injectButton">
+        INJETAR
+    </button>
+
+    <button id="clearButton">
+        LIMPAR MEMÓRIA
+    </button>
+
+    <button id="openFF">
+        ABRIR FREE FIRE
+    </button>
+
+    <button id="openFFMax">
+        ABRIR FREE FIRE MAX
+    </button>
+
+</div>
+
+
+<div class="status" id="status">
+    Sistema pronto.
+</div>
+
+
+<pre id="json"></pre>
+
+</div>
+
+
+<script>
+
+/* ELEMENTOS */
+
+const legit =
+    document.getElementById("legit");
+
+const rage =
+    document.getElementById("rage");
+
+const precisionSlider =
+    document.getElementById("precisionSlider");
+
+const precisionValue =
+    document.getElementById("precisionValue");
+
+const x =
+    document.getElementById("x");
+
+const y =
+    document.getElementById("y");
+
+const xNumber =
+    document.getElementById("xNumber");
+
+const yNumber =
+    document.getElementById("yNumber");
+
+const status =
+    document.getElementById("status");
+
+const json =
+    document.getElementById("json");
+
+
+/* LEGIT E RAGE SÃO EXCLUSIVOS */
+
+legit.addEventListener("change", () => {
+
+    if (legit.checked) {
+        rage.checked = false;
+    }
+
+    update();
+});
+
+
+rage.addEventListener("change", () => {
+
+    if (rage.checked) {
+        legit.checked = false;
+    }
+
+    update();
+});
+
+
+/* PRECISION 0–100% */
+
+precisionSlider.addEventListener("input", () => {
+
+    precisionValue.textContent =
+        precisionSlider.value + "%";
+
+    update();
+});
+
+
+/* EIXO X */
+
+x.addEventListener("input", () => {
+
+    xNumber.value = x.value;
+
+    update();
+});
+
+
+xNumber.addEventListener("input", () => {
+
+    let v = Math.max(
+        0,
+        Math.min(100, Number(xNumber.value))
+    );
+
+    x.value = v;
+    xNumber.value = v;
+
+    update();
+});
+
+
+/* EIXO Y */
+
+y.addEventListener("input", () => {
+
+    yNumber.value = y.value;
+
+    update();
+});
+
+
+yNumber.addEventListener("input", () => {
+
+    let v = Math.max(
+        0,
+        Math.min(100, Number(yNumber.value))
+    );
+
+    y.value = v;
+    yNumber.value = v;
+
+    update();
+});
+
+
+/* MODO */
+
+function getMode() {
+
+    if (legit.checked)
+        return "Precision Legit";
+
+    if (rage.checked)
+        return "Precision Rage";
+
+    return "Nenhum";
+}
+
+
+/* GERAR JSON */
+
+function update() {
+
+    const config = {
+
+        precision: {
+
+            enabled:
+                legit.checked ||
+                rage.checked,
+
+            mode:
+                getMode(),
+
+            percentage:
+                Number(precisionSlider.value),
+
+            sensitivity: {
+
+                X:
+                    Number(x.value),
+
+                Y:
+                    Number(y.value)
+            },
+
+            limitOvershoot:
+                true
+        },
+
+        functions: {
+
+            clearMemory:
+                document.getElementById(
+                    "clearMemory"
+                ).checked,
+
+            inject:
+                document.getElementById(
+                    "inject"
+                ).checked
+        }
+
+    };
+
+    json.textContent =
+        JSON.stringify(config, null, 2);
+}
+
+
+/* APLICAR */
+
+document.getElementById("apply").onclick = () => {
+
+    update();
+
+    status.textContent =
+        "Configuração aplicada ao painel.";
+};
+
+
+/* INJETAR */
+
+document.getElementById("injectButton").onclick = () => {
+
+    document.getElementById(
+        "inject"
+    ).checked = true;
+
+    update();
+
+    status.textContent =
+        "Configuração aplicada ao painel.";
+};
+
+
+/* LIMPAR MEMÓRIA */
+
+document.getElementById("clearButton").onclick = () => {
+
+    document.getElementById(
+        "clearMemory"
+    ).checked = true;
+
+    update();
+
+    status.textContent =
+        "Limpeza selecionada. A página não possui acesso direto à RAM do Android.";
+};
+
+
+/*
+   ABRIR FREE FIRE DIRETAMENTE
+
+   Package:
+   com.dts.freefireth
+*/
+
+document.getElementById("openFF").onclick = () => {
+
+    window.location.href =
+        "intent://#Intent;" +
+        "package=com.dts.freefireth;" +
+        "end";
+};
+
+
+/*
+   ABRIR FREE FIRE MAX DIRETAMENTE
+
+   Package:
+   com.dts.freefiremax
+*/
+
+document.getElementById("openFFMax").onclick = () => {
+
+    window.location.href =
+        "intent://#Intent;" +
+        "package=com.dts.freefiremax;" +
+        "end";
+};
+
+
+/* FUNDO ANIMADO */
+
+const names =
+    document.getElementById("names");
+
+for (let i = 0; i < 40; i++) {
+
+    const n =
+        document.createElement("div");
+
+    n.className = "name";
+
+    n.textContent =
+        "yckxl💤";
+
+    n.style.left =
+        Math.random() * 100 + "%";
+
+    n.style.top =
+        Math.random() * 100 + "%";
+
+    n.style.animationDuration =
+        (3 + Math.random() * 5) + "s";
+
+    n.style.animationDelay =
+        (-Math.random() * 5) + "s";
+
+    names.appendChild(n);
+}
+
+
+/* INICIALIZAÇÃO */
+
+update();
+
+</script>
+
+</body>
+</html>
