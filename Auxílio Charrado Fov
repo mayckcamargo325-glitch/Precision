@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charrado Auxílio</title>
+<style>
+  :root{
+    --bg:#0e0f13; --panel:#161821; --panel2:#1d2030; --line:#2a2f42;
+    --txt:#e6e8f0; --dim:#8b90a6; --acc:#5b8cff; --acc2:#38d39f;
+    --warn:#ff5c7a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Segoe UI',system-ui,sans-serif;
+    background:radial-gradient(circle at 20% 0%,#1a1d2b,#0e0f13 60%);
+    color:var(--txt); min-height:100vh; display:flex;
+    align-items:center; justify-content:center; padding:24px;
+  }
+  .app{
+    width:100%; max-width:920px; background:var(--panel);
+    border:1px solid var(--line); border-radius:18px; overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.6);
+  }
+  header{
+    padding:20px 26px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:14px;
+    background:linear-gradient(90deg,#1a1e2c,#161821);
+  }
+  .logo{
+    width:38px;height:38px;border-radius:10px;
+    background:linear-gradient(135deg,var(--acc),var(--acc2));
+    display:grid;place-items:center;font-weight:800;color:#0b0d12;font-size:18px;
+  }
+  header h1{font-size:18px;font-weight:700;letter-spacing:.3px}
+  header .sub{font-size:12px;color:var(--dim);margin-top:2px}
+
+  nav{display:flex;gap:4px;padding:12px 20px 0;border-bottom:1px solid var(--line);background:var(--panel)}
+  nav button{
+    background:none;border:none;color:var(--dim);font:inherit;font-size:13px;
+    padding:11px 16px;border-radius:10px 10px 0 0;cursor:pointer;
+    border-bottom:2px solid transparent;transition:.15s;
+  }
+  nav button:hover{color:var(--txt);background:var(--panel2)}
+  nav button.active{color:var(--txt);border-bottom-color:var(--acc);background:var(--panel2)}
+
+  main{padding:26px;min-height:340px}
+  .tab{display:none;animation:fade .2s ease}
+  .tab.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .tab h2{font-size:15px;font-weight:600;margin-bottom:18px;color:var(--txt)}
+  .tab h2 span{color:var(--dim);font-weight:400;font-size:12px}
+
+  .row{
+    display:flex;align-items:center;gap:16px;
+    padding:14px 16px;background:var(--panel2);
+    border:1px solid var(--line);border-radius:12px;margin-bottom:10px;
+  }
+  .row .label{flex:1;font-size:13.5px}
+  .row .label small{display:block;color:var(--dim);font-size:11.5px;margin-top:2px}
+
+  /* switch */
+  .switch{position:relative;width:46px;height:26px;flex-shrink:0}
+  .switch input{opacity:0;width:0;height:0}
+  .slider{
+    position:absolute;inset:0;background:#2a2f42;border-radius:26px;
+    cursor:pointer;transition:.2s;
+  }
+  .slider::before{
+    content:"";position:absolute;width:20px;height:20px;border-radius:50%;
+    left:3px;top:3px;background:#8b90a6;transition:.2s;
+  }
+  .switch input:checked + .slider{background:var(--acc)}
+  .switch input:checked + .slider::before{transform:translateX(20px);background:#fff}
+
+  /* range */
+  .range-wrap{flex:1;display:flex;align-items:center;gap:12px}
+  input[type=range]{
+    flex:1; -webkit-appearance:none; height:6px; border-radius:6px;
+    background:linear-gradient(90deg,var(--acc),var(--acc2)); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:18px;height:18px;border-radius:50%;
+    background:#fff;border:3px solid var(--acc);cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.5);
+  }
+  .val{
+    min-width:44px;text-align:center;font-variant-numeric:tabular-nums;
+    font-size:13px;color:var(--acc2);font-weight:600;
+    background:#0e0f13;padding:5px 8px;border-radius:8px;border:1px solid var(--line);
+  }
+
+  /* select cards */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+  .card{
+    padding:18px;border:1.5px solid var(--line);border-radius:14px;
+    background:var(--panel2);cursor:pointer;transition:.15s;text-align:left;
+    color:var(--txt);font:inherit;
+  }
+  .card:hover{border-color:var(--acc);transform:translateY(-1px)}
+  .card.sel{border-color:var(--acc);background:linear-gradient(135deg,#1d2540,#1d2030)}
+  .card .nm{font-size:14px;font-weight:600}
+  .card .ds{font-size:11.5px;color:var(--dim);margin-top:4px}
+
+  .btn{
+    width:100%;padding:14px;border:none;border-radius:12px;font:inherit;
+    font-size:14px;font-weight:700;cursor:pointer;transition:.15s;
+    background:linear-gradient(90deg,var(--acc),#7a5cff);color:#fff;
+    letter-spacing:.3px;
+  }
+  .btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+  .btn:active{transform:none}
+  .btn.alt{background:linear-gradient(90deg,var(--acc2),#2fa87c)}
+
+  .status{
+    margin-top:14px;font-size:12px;color:var(--dim);
+    padding:10px 14px;background:#0e0f13;border:1px solid var(--line);
+    border-radius:10px;min-height:38px;display:flex;align-items:center;gap:8px;
+  }
+  .status.ok{color:var(--acc2);border-color:#1d4a3a}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0}
+  .status.ok .dot{background:var(--acc2);box-shadow:0 0 8px var(--acc2)}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo">C</div>
+    <div>
+      <h1>Charrado Auxílio</h1>
+      <div class="sub">Painel de configuração</div>
+    </div>
+  </header>
+
+  <nav id="tabs">
+    <button class="active" data-tab="fov">Charrado FOV</button>
+    <button data-tab="roubo">Roubadão</button>
+    <button data-tab="sens">Gerar Sensibilidade</button>
+    <button data-tab="inject">Injetar</button>
+  </nav>
+
+  <main>
+    <!-- FOV -->
+    <section class="tab active" id="tab-fov">
+      <h2>Charrado FOV <span>· ajustes de mira</span></h2>
+
+      <div class="row">
+        <div class="label">Aumentar precisão<small>Reduz dispersão do disparo</small></div>
+        <label class="switch"><input type="checkbox" id="prec"><span class="slider"></span></label>
+      </div>
+
+      <div class="row">
+        <div class="label">Melhorar sensibilidade<small>Ajuste fino do controle</small></div>
+        <label class="switch"><input type="checkbox" id="sensfov"><span class="slider"></span></label>
+      </div>
+
+      <div class="row">
+        <div class="label">Aumentar taxa de headshot<small>Prioriza mira na cabeça</small></div>
+        <div class="range-wrap">
+          <input type="range" id="hs" min="0" max="100" value="50">
+          <span class="val" id="hsVal">50</span>
+        </div>
+      </div>
+
+      <div class="status" id="st-fov"><span class="dot"></span><span>Pronto</span></div>
+    </section>
+
+    <!-- ROUBADÃO -->
+    <section class="tab" id="tab-roubo">
+      <h2>Roubadão <span>· controle de inimigos</span></h2>
+
+      <div class="row">
+        <div class="label">Boneco lento<small>Deixa os inimigos mais lentos</small></div>
+        <label class="switch"><input type="checkbox" id="slow"><span class="slider"></span></label>
+      </div>
+
+      <div class="row">
+        <div class="label">Intensidade<small>Quanto mais alto, mais lento</small></div>
+        <div class="range-wrap">
+          <input type="range" id="slowI" min="0" max="100" value="30">
+          <span class="val" id="slowVal">30</span>
+        </div>
+      </div>
+
+      <div class="status" id="st-roubo"><span class="dot"></span><span>Pronto</span></div>
+    </section>
+
+    <!-- SENSIBILIDADE -->
+    <section class="tab" id="tab-sens">
+      <h2>Gerar Sensibilidade <span>· faixas</span></h2>
+
+      <div class="cards">
+        <button class="card" data-sens="alta">
+          <div class="nm">Alta</div><div class="ds">150 – 200</div>
+        </button>
+        <button class="card" data-sens="media">
+          <div class="nm">Média</div><div class="ds">100 – 149</div>
+        </button>
+        <button class="card" data-sens="baixa">
+          <div class="nm">Baixa</div><div class="ds">10 – 99</div>
+        </button>
+      </div>
+
+      <div class="row">
+        <div class="label">Valor gerado<small>Clique em gerar para sortear</small></div>
+        <span class="val" id="sensOut" style="min-width:60px;color:var(--acc)">—</span>
+      </div>
+
+      <button class="btn alt" id="genSens">Gerar sensibilidade</button>
+      <div class="status" id="st-sens"><span class="dot"></span><span>Nenhuma faixa selecionada</span></div>
+    </section>
+
+    <!-- INJETAR -->
+    <section class="tab" id="tab-inject">
+      <h2>Injetar <span>· selecione a build</span></h2>
+
+      <div class="cards">
+        <button class="card" data-build="ffmax">
+          <div class="nm">Free Fire Max</div><div class="ds">Build MAX</div>
+        </button>
+        <button class="card" data-build="ff">
+          <div class="nm">Free Fire</div><div class="ds">Build normal</div>
+        </button>
+      </div>
+
+      <button class="btn" id="injectBtn">Injetar e abrir jogo</button>
+      <div class="status" id="st-inject"><span class="dot"></span><span>Aguardando seleção</span></div>
+    </section>
+  </main>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('#tabs button');
+const panels = document.querySelectorAll('.tab');
+tabs.forEach(t => t.addEventListener('click', () => {
+  tabs.forEach(x => x.classList.remove('active'));
+  panels.forEach(p => p.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+}));
+
+function bindRange(id, outId, tabStatusId, msg){
+  const r = document.getElementById(id), o = document.getElementById(outId);
+  const st = document.getElementById(tabStatusId);
+  r.addEventListener('input', () => {
+    o.textContent = r.value;
+    st.classList.add('ok');
+    st.querySelector('span:last-child').textContent = msg + ' = ' + r.value;
+  });
+}
+bindRange('hs','hsVal','st-fov','Headshot');
+bindRange('slowI','slowVal','st-roubo','Boneco lento');
+
+// toggles
+document.getElementById('prec').addEventListener('change', e => {
+  const st = document.getElementById('st-fov');
+  st.classList.add('ok');
+  st.querySelector('span:last-child').textContent = 'Precisão ' + (e.target.checked ? 'ativada' : 'desativada');
+});
+document.getElementById('sensfov').addEventListener('change', e => {
+  const st = document.getElementById('st-fov');
+  st.classList.add('ok');
+  st.querySelector('span:last-child').textContent = 'Sensibilidade ' + (e.target.checked ? 'ativada' : 'desativada');
+});
+document.getElementById('slow').addEventListener('change', e => {
+  const st = document.getElementById('st-roubo');
+  st.classList.add('ok');
+  st.querySelector('span:last-child').textContent = 'Boneco lento ' + (e.target.checked ? 'ativado' : 'desativado');
+});
+
+// sensibilidade
+let faixaSel = null;
+document.querySelectorAll('#tab-sens .card').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('#tab-sens .card').forEach(x => x.classList.remove('sel'));
+    c.classList.add('sel');
+    faixaSel = c.dataset.sens;
+    const st = document.getElementById('st-sens');
+    st.classList.add('ok');
+    st.querySelector('span:last-child').textContent = 'Faixa selecionada: ' + c.querySelector('.nm').textContent;
+  });
+});
+document.getElementById('genSens').addEventListener('click', () => {
+  if (!faixaSel) {
+    const st = document.getElementById('st-sens');
+    st.classList.remove('ok');
+    st.querySelector('span:last-child').textContent = 'Selecione uma faixa primeiro';
+    return;
+  }
+  const ranges = { alta:[150,200], media:[100,149], baixa:[10,99] };
+  const [lo, hi] = ranges[faixaSel];
+  const v = lo + Math.floor(Math.random() * (hi - lo + 1));
+  document.getElementById('sensOut').textContent = v;
+  const st = document.getElementById('st-sens');
+  st.classList.add('ok');
+  st.querySelector('span:last-child').textContent = 'Sensibilidade gerada: ' + v;
+});
+
+// injetar
+let buildSel = null;
+document.querySelectorAll('#tab-inject .card').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('#tab-inject .card').forEach(x => x.classList.remove('sel'));
+    c.classList.add('sel');
+    buildSel = c.dataset.build;
+    const st = document.getElementById('st-inject');
+    st.classList.add('ok');
+    st.querySelector('span:last-child').textContent = 'Build: ' + c.querySelector('.nm').textContent;
+  });
+});
+document.getElementById('injectBtn').addEventListener('click', () => {
+  const st = document.getElementById('st-inject');
+  if (!buildSel) {
+    st.classList.remove('ok');
+    st.querySelector('span:last-child').textContent = 'Selecione uma build primeiro';
+    return;
+  }
+  st.classList.add('ok');
+  st.querySelector('span:last-child').textContent =
+    'Build ' + (buildSel === 'ffmax' ? 'Free Fire Max' : 'Free Fire') + ' selecionada (sem injeção real)';
+});
+</script>
+</body>
+</html>
